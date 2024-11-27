@@ -5,7 +5,7 @@
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/khaulinD/test_synergyway.git
+    git clone https://github.com/khaulinD/test_developtoday/
     cd test_synergyway
     ```
 
