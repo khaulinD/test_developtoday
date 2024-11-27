@@ -13,10 +13,14 @@
 1. **Start the docker:**
 
     ```bash
-    docker-compose up --build
+    docker-compose up --build -d
     ``` 
-2. **Visit the application:**
+2. **Set up database tables**
+   ```bash
+    docker-compose exec web alembic upgrade head
+    ``` 
+3. **Visit the application:**
 
-    Open a browser and go to [http://localhost:8000/docs](http://localhost:8000/docs) to see the running application.
+   -  Open a browser and go to [http://localhost:8000/docs](http://localhost:8000/docs) to see the running application.
 
    - Adminer - for database review in browser: http://localhost:8080

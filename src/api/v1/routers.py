@@ -1,5 +1,7 @@
 from fastapi import APIRouter
+
 from .endpoints import cats_router, missions_router, targets_router
+
 
 router = APIRouter()
 

@@ -14,12 +14,10 @@ class TargetSchema(BaseModel):
                 "name": "Dimyla",
                 "country": "Ukraine",
                 "note": "Very strong",
-                "complete_state": False
+                "complete_state": False,
             }
         }
 
 
 class TargetsNoteSchema(BaseModel):
     note: str | None = None
-
-

@@ -1,6 +1,5 @@
-from sqlalchemy import Boolean, String, Integer, ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship
-
+from sqlalchemy import Boolean, ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database.base import Base, BaseMixin
 
 
@@ -12,7 +11,9 @@ class Mission(Base, BaseMixin):
 
 
 class Target(Base, BaseMixin):
-    mission_id: Mapped[int] = mapped_column(Integer, ForeignKey("missions.id"), nullable=False)
+    mission_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("missions.id"), nullable=False
+    )
     name: Mapped[str] = mapped_column(String)
     country: Mapped[str] = mapped_column(String)
     note: Mapped[str] = mapped_column(String)

@@ -1,8 +1,8 @@
 from fastapi import APIRouter
-
 from src.controllers.missions import MissionController
 from src.core.logger import get_logger
-from src.schemas.missions import MissionSchema, MissionInputSchema
+from src.schemas.missions import MissionInputSchema, MissionSchema
+
 
 router = APIRouter()
 logger = get_logger(__name__)
@@ -34,11 +34,15 @@ async def delete_mission(mission_id: int):
 
 @router.patch("/{mission_id}")
 async def update_mission_status(mission_id: int, status: bool = False):
-    res = await MissionController.update_mission_status(mission_id=mission_id, status=status)
+    res = await MissionController.update_mission_status(
+        mission_id=mission_id, status=status
+    )
     return res
 
 
 @router.patch("/{mission_id}/cat/{cat_id}")
 async def assign_mission(mission_id: int, cat_id: int):
-    res = await MissionController.assign_mission(mission_id=mission_id, cat_id=cat_id)
+    res = await MissionController.assign_mission(
+        mission_id=mission_id, cat_id=cat_id
+    )
     return res

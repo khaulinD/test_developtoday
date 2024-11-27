@@ -13,7 +13,7 @@ class CatSchema(BaseModel):
                 "name": "Whiskers",
                 "years_experience": 3.5,
                 "salary": 20000.0,
-                "breed": "Siamese"
+                "breed": "Siamese",
             }
         }
 

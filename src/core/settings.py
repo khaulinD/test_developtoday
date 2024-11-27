@@ -31,6 +31,7 @@ class DbSettings(BaseModel):
 
 class Settings(BaseSettings):
     """Aggregated application settings."""
+
     cats_breed_url: str = "https://api.thecatapi.com/v1/breeds"
     db: DbSettings = DbSettings()
 
