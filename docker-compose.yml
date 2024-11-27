@@ -1,0 +1,49 @@
+#services:
+#  db:
+#    image: postgres:latest
+#    environment:
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=password
+#      - POSTGRES_DB=dbname
+#      - POSTGRES_HOST=localhost
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#
+#
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 8080:8080
+#
+#  web:
+#    build: .
+#    ports:
+#      - "8000:8000"
+#    depends_on:
+#      - db
+#
+#volumes:
+#  postgres_data:
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=dbname
+    networks:
+      - app-network
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+networks:
+  app-network:
