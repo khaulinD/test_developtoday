@@ -7,12 +7,12 @@ class Mission(Base, BaseMixin):
     complete_state: Mapped[bool] = mapped_column(Boolean, default=False)
 
     cat = relationship("SpyCat", back_populates="mission", uselist=False)
-    targets = relationship("Target", back_populates="mission")
+    targets = relationship("Target", back_populates="mission", cascade="all, delete-orphan")
 
 
 class Target(Base, BaseMixin):
     mission_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("missions.id"), nullable=False
+        Integer, ForeignKey("missions.id", ondelete="CASCADE"), nullable=False
     )
     name: Mapped[str] = mapped_column(String)
     country: Mapped[str] = mapped_column(String)

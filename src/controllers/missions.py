@@ -46,32 +46,46 @@ class MissionController:
     @db_session
     async def delete_mission(session, mission_id: int):
         try:
-            mission = await session.get(Mission, mission_id)
-            if mission:
-                # Check if the mission is assigned to a cat
-                if mission.cat:
-                    raise HTTPException(
-                        status_code=status.HTTP_400_BAD_REQUEST,
-                        detail=f"Mission '{mission.description} is"
-                        f" assigned to Cat '{mission.cat.name}' and cannot be deleted.",
-                    )
-                else:
-                    # Safe to delete the mission
-                    session.delete(mission)
-                    await session.commit()
-                    return JSONResponse(
-                        status_code=status.HTTP_204_NO_CONTENT,
-                        content={"status": "ok"},
-                    )
-            else:
+            result = await session.execute(
+                select(Mission).where(Mission.id == mission_id).options(
+                    joinedload(Mission.cat)
+                )
+            )
+            mission = result.scalars().first()
+
+            if not mission:
                 raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
+                    status_code=status.HTTP_404_NOT_FOUND,
                     detail="Mission not found!",
                 )
+
+            if mission.cat:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=(
+                        f"Mission '{mission.id}' is assigned to Cat "
+                        f"'{mission.cat.name}' and cannot be deleted."
+                    ),
+                )
+
+            # Safe to delete the mission
+            await session.delete(mission)
+            await session.commit()
+
+            return JSONResponse(
+                status_code=status.HTTP_204_NO_CONTENT,
+                content={"status": "ok"},
+            )
+
+        except HTTPException as e:
+            raise e
+
         except Exception as e:
             logger.error(f"Error deleting mission. Error: {e}")
+            await session.rollback()
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="An error occurred while deleting the mission.",
             )
 
     @staticmethod
@@ -115,8 +129,7 @@ class MissionController:
             .where(Mission.id == mission_id)
             .options(joinedload(Mission.cat), joinedload(Mission.targets))
         )
-        mission = res.scalar_one_or_none()
-        print(mission)
+        mission = res.scalars().first()
         return mission
 
     @staticmethod
@@ -128,7 +141,7 @@ class MissionController:
                 joinedload(Mission.cat), joinedload(Mission.targets)
             )
         )
-        mission = res.scalars().all()
+        mission = res.unique().scalars().all()
         return mission
 
     @staticmethod

@@ -38,6 +38,7 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(
             ["mission_id"],
             ["missions.id"],
+            ondelete="SET NULL",
         ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("mission_id"),
@@ -53,6 +54,7 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(
             ["mission_id"],
             ["missions.id"],
+            ondelete="CASCADE",
         ),
         sa.PrimaryKeyConstraint("id"),
     )

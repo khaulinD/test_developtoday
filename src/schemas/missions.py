@@ -1,13 +1,13 @@
 from pydantic import BaseModel
 from src.schemas.cats import CatSchema
-from src.schemas.targets import TargetSchema
+from src.schemas.targets import TargetSchema, TargetInputSchema
 
 
 class MissionInputSchema(BaseModel):
-    targets: list[TargetSchema]
+    targets: list[TargetInputSchema]
 
 
 class MissionSchema(BaseModel):
     id: int
     cat: CatSchema | None = None
-    target: list[TargetSchema]
+    targets: list[TargetSchema]

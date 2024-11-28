@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class TargetSchema(BaseModel):
+class TargetInputSchema(BaseModel):
     name: str
     country: str
     note: str
@@ -17,6 +17,10 @@ class TargetSchema(BaseModel):
                 "complete_state": False,
             }
         }
+
+
+class TargetSchema(TargetInputSchema):
+    id: int | None = None
 
 
 class TargetsNoteSchema(BaseModel):
